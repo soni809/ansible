@@ -1,0 +1,22 @@
+---
+- name: Install apache latest version
+  yum: pkg=httpd state=installed
+
+- name: Copy Index file
+  copy: src=index.html  dest=/var/www/html
+
+- name: Apache is starting
+  service: name=httpd state=started
+
+- name: Install wget
+  yum: pkg=wget
+
+#- name: download java
+#  url: http://download.oracle.com/otn-pub/java/jdk/9+181/jdk-9_linux-x64_bin.rpm
+#  dest: /home/rahul
+
+- name: Install Java
+  yum: pkg=java-1.8.0-openjdk-src-1.8.0.181-7.b13.el7.x86_64 state=installed
+
+- name: Install Docker
+  yum: pkg=docker state=installed

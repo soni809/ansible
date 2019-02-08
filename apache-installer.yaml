@@ -1,0 +1,6 @@
+---
+ - name: Apache Installer
+   hosts: server
+   roles:
+    - { role: test}
+
