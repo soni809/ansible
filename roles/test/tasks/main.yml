@@ -5,8 +5,16 @@
 - name: Copy Index file
   copy: src=index.html  dest=/var/www/html
 
+- name: Stopping Apache
+  service: name=httpd state=stopped
+  tags: ['restart','stop']
+
 - name: Apache is starting
   service: name=httpd state=started
+  tags: ['restart', 'start']
+#- name: Apache service is restarting
+#  service: name=httpd state=started
+#  tags: ['restart', 'start']
 
 - name: Install wget
   yum: pkg=wget
@@ -19,4 +27,37 @@
   yum: pkg=java-1.8.0-openjdk-src-1.8.0.181-7.b13.el7.x86_64 state=installed
 
 - name: Install Docker
-  yum: pkg=docker state=installed
+  yum: pkg=docker-latest.x86_64 state=installed
+
+- name: Stopping Docker
+  service: name=docker state=stopped
+  tags: ['restart','stop']
+
+- name: Docker is starting
+  service: name=docker state=started
+  tags: ['restart','start']
+
+- name: Copying Docker file
+  copy: src=Dockerfile dest=/var/www/html
+
+- name: Install pip
+  yum: name=python-pip state=present
+      
+- name: install docker-py
+  pip: name=docker-py
+
+- name: Pulling centos image
+  docker_image:
+   name: centos
+   path: /var/www/html
+   state: build
+
+- name: Running the container
+  docker_image:
+    name: centos
+    path: /var/www/html
+    state: present
+
+#            
+- name: Check if container is running
+  shell: docker ps

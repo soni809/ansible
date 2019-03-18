@@ -1,6 +1,7 @@
 ---
  - name: Apache Installer
    hosts: server
+   gather_facts: yes
    roles:
     - { role: test}
 
